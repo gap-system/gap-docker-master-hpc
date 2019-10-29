@@ -4,20 +4,30 @@ MAINTAINER The GAP Group <support@gap-system.org>
 
 ENV GAP_BRANCH=master
 
+ENV GAP_VERSION=5d7dad621856a93ec86345c8b557ce6e35236d36
+
 # download and build GAP
 RUN    mkdir /home/gap/inst/ \
     && cd /home/gap/inst/ \
-    && git clone --depth=1 -b ${GAP_BRANCH} https://github.com/gap-system/gap gap-${GAP_BRANCH} \
+    && mkdir gap-${GAP_BRANCH} \
     && cd gap-${GAP_BRANCH} \
+    && git init \
+    && git remote add origin https://github.com/gap-system/gap \
+    && git fetch --depth 1 origin $GAP_VERSION \
+    && git checkout FETCH_HEAD \
     && ./autogen.sh \
-    && ./configure \
-    && make \
+    && ./configure --enable-hpcgap \
+    && make -j4 \
     && cp bin/gap.sh bin/gap
 
 # download and build GAP packages
 RUN    mkdir /home/gap/inst/gap-${GAP_BRANCH}/pkg \
     && cd /home/gap/inst/gap-${GAP_BRANCH}/pkg \
     && curl https://www.gap-system.org/pub/gap/gap4pkgs/packages-${GAP_BRANCH}.tar.gz | tar xz \
+    && cd pkg \
+    && cd ZeroMQ* \
+    && wget -O - https://github.com/gap-packages/ZeroMQInterface/pull/26.patch | patch -p1 \
+    && cd .. \
     && ../bin/BuildPackages.sh
 
 # build JupyterKernel
