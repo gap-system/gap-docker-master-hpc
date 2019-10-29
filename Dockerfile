@@ -38,7 +38,7 @@ RUN    cd /home/gap/inst/gap-${GAP_BRANCH}/pkg \
 RUN jupyter serverextension enable --py jupyterlab --user
 
 ENV PATH /home/gap/inst/gap-${GAP_BRANCH}/pkg/JupyterKernel/bin:${PATH}
-ENV JUPYTER_GAP_EXECUTABLE /home/gap/inst/gap-${GAP_BRANCH}/bin/gap.sh
+ENV JUPYTER_GAP_EXECUTABLE "/home/gap/inst/gap-${GAP_BRANCH}/bin/gap.sh -S --single-thread"
 
 ENV GAP_HOME /home/gap/inst/gap-${GAP_BRANCH}
 ENV PATH ${GAP_HOME}/bin:${PATH}
