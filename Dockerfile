@@ -23,7 +23,7 @@ RUN    mkdir /home/gap/inst/ \
 # download and build GAP packages
 RUN    mkdir /home/gap/inst/gap-${GAP_BRANCH}/pkg \
     && cd /home/gap/inst/gap-${GAP_BRANCH}/pkg \
-    && curl https://www.gap-system.org/pub/gap/gap4pkgs/packages-${GAP_BRANCH}.tar.gz | tar xz \
+    && curl https://files.gap-system.org/gap4pkgs/packages-${GAP_BRANCH}.tar.gz | tar xz \
     && cd ZeroMQ* \
     && wget -O - https://github.com/gap-packages/ZeroMQInterface/pull/26.patch | patch -p1 \
     && cd .. \
