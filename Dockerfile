@@ -24,16 +24,13 @@ RUN    mkdir /home/gap/inst/ \
 RUN    mkdir /home/gap/inst/gap-${GAP_BRANCH}/pkg \
     && cd /home/gap/inst/gap-${GAP_BRANCH}/pkg \
     && curl https://files.gap-system.org/gap4pkgs/packages-${GAP_BRANCH}.tar.gz | tar xz \
-    && cd ZeroMQ* \
-    && wget -O - https://github.com/gap-packages/ZeroMQInterface/pull/26.patch | patch -p1 \
-    && cd .. \
     && ../bin/BuildPackages.sh
 
 # build JupyterKernel
 RUN    cd /home/gap/inst/gap-${GAP_BRANCH}/pkg \
     && mv JupyterKernel-* JupyterKernel \
     && cd JupyterKernel \
-    && python3 setup.py install --user
+    && pip3 install . --user
 
 RUN jupyter serverextension enable --py jupyterlab --user
 
